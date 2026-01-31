@@ -200,14 +200,14 @@
                 
                 <div class="footer-section">
                     <h3>Contact</h3>
-                    <p>📧 contact@ligueyconnect.sn</p>
-                    <p>📱 +221 33 800 00 00</p>
+                    <p>📧 ligueyconnect@gmail.com</p>
+                    <p>📱 +221 76 736 30 62</p>
                     <p>📍 Dakar, Sénégal</p>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2026 Liguey Connect - École Supérieure Polytechnique de Dakar</p>
+                <p>&copy; 2026 Liguey Connect - Senegal </p>
             </div>
         </div>
     </footer>
@@ -250,4 +250,68 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <p>${offre.descript
+                                <p>${offre.description.substring(0, 150)}...</p>
+                                <div class="d-flex gap-2 mt-2">
+                                    <span class="badge badge-primary">${offre.type_contrat}</span>
+                                    <span class="badge badge-secondary">📍 ${offre.commune}</span>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <span>${LigueyConnect.formaterDate(offre.date_creation)}</span>
+                                <a href="offre-detail.html?id=${offre.id}" class="btn btn-primary btn-sm">Voir l'offre</a>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<p class="text-center">Aucune offre disponible pour le moment.</p>';
+                }
+            } catch (error) {
+                document.getElementById('offres-recentes').innerHTML = '<p class="text-center">Erreur de chargement.</p>';
+            }
+        }
+        
+        // Charger les prestataires en vedette
+        async function chargerPrestatairesVedette() {
+            try {
+                const response = await LigueyConnect.rechercherPrestataires({ limite: 3, tri: 'note' });
+                const container = document.getElementById('prestataires-vedette');
+                
+                if (response.success && response.data.prestataires.length > 0) {
+                    container.innerHTML = response.data.prestataires.map(prestataire => `
+                        <div class="card">
+                            <div class="card-header">
+                                <img src="${prestataire.photo_profil || 'https://via.placeholder.com/60'}" 
+                                    alt="${prestataire.nom}" class="card-avatar">
+                                <div>
+                                    <h3 class="card-title">${prestataire.prenom} ${prestataire.nom}</h3>
+                                    <p class="card-subtitle">${prestataire.metier}</p>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p>${prestataire.description ? prestataire.description.substring(0, 100) + '...' : 'Prestataire qualifié'}</p>
+                                ${LigueyConnect.genererEtoiles(parseFloat(prestataire.note_moyenne))}
+                                <p class="mt-2">📍 ${prestataire.commune}, ${prestataire.region}</p>
+                                <p><strong>${prestataire.tarif_horaire ? prestataire.tarif_horaire.toLocaleString() + ' FCFA/h' : 'Tarif sur demande'}</strong></p>
+                            </div>
+                            <div class="card-footer">
+                                <span class="badge badge-success">${prestataire.disponibilite}</span>
+                                <a href="prestataire-detail.html?id=${prestataire.id}" class="btn btn-primary btn-sm">Contacter</a>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<p class="text-center">Aucun prestataire disponible.</p>';
+                }
+            } catch (error) {
+                document.getElementById('prestataires-vedette').innerHTML = '<p class="text-center">Erreur de chargement.</p>';
+            }
+        }
+        
+        // Charger les données au chargement de la page
+        document.addEventListener('DOMContentLoaded', () => {
+            chargerOffresRecentes();
+            chargerPrestatairesVedette();
+        });
+    </script>
+</body>
+</html>
