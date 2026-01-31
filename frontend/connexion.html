@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Liguey Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">Liguey<span>Connect</span></a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="recherche.html">Rechercher</a></li>
+                    <li><a href="inscription.html">S'inscrire</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container" style="max-width: 500px;">
+            <h1 class="text-center">Connexion</h1>
+            <p class="text-center mb-4">Accédez à votre compte Liguey Connect</p>
+
+            <div class="card">
+                <form id="form-connexion">
+                    <div class="form-group">
+                        <label class="form-label">Téléphone ou Email</label>
+                        <input type="text" id="identifiant" class="form-input" placeholder="77 123 45 67 ou email@exemple.com" required autofocus>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Mot de passe</label>
+                        <input type="password" id="mot_de_passe" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" id="se_souvenir">
+                            <span>Se souvenir de moi</span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">Se connecter</button>
+                    
+                    <p class="text-center mt-3">
+                        <a href="#" onclick="afficherMotDePasseOublie(); return false;" style="color: var(--color-secondary);">Mot de passe oublié ?</a>
+                    </p>
+                </form>
+                
+                <hr style="margin: 2rem 0;">
+                
+                <p class="text-center">
+                    Vous n'avez pas de compte ?
+                </p>
+                <a href="inscription.html" class="btn btn-secondary btn-block">Créer un compte</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Mot de passe oublié -->
+    <div id="modal-mot-de-passe" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Mot de passe oublié</h2>
+                <button class="modal-close" onclick="LigueyConnect.fermerModal('modal-mot-de-passe')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Veuillez contacter l'administration pour réinitialiser votre mot de passe.</p>
+                <p><strong>Email :</strong> admin@ligueyconnect.sn</p>
+                <p><strong>Téléphone :</strong> +221 33 800 00 00</p>
+                <button class="btn btn-primary btn-block mt-3" onclick="LigueyConnect.fermerModal('modal-mot-de-passe')">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Liguey Connect</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Gérer la soumission du formulaire
+        document.getElementById('form-connexion').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const identifiant = document.getElementById('identifiant').value.trim();
+            const motDePasse = document.getElementById('mot_de_passe').value;
+            
+            if (!identifiant || !motDePasse) {
+                LigueyConnect.afficherAlerte('Veuillez remplir tous les champs', 'error');
+                return;
+            }
+            
+            try {
+                await LigueyConnect.connecterUtilisateur(identifiant, motDePasse);
+            } catch (error) {
+                console.error('Erreur connexion:', error);
+            }
+        });
+        
+        // Afficher le modal mot de passe oublié
+        function afficherMotDePasseOublie() {
+            LigueyConnect.ouvrirModal('modal-mot-de-passe');
+        }
+        
+        // Rediriger si déjà connecté
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = LigueyConnect.verifierConnexion();
+            if (user) {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Liguey Connect - Plateforme de mise en relation pour l'emploi et les services de proximité au Sénégal">
+    <title>Liguey Connect - Trouvez votre liguey en un clic</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">Liguey<span>Connect</span></a>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Accueil</a></li>
+                    <li><a href="recherche.html">Rechercher</a></li>
+                    <li><a href="connexion.html">Connexion</a></li>
+                    <li><a href="inscription.html" class="btn btn-secondary btn-sm">S'inscrire</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Trouvez votre <em>liguey</em> en un clic</h1>
+            <p>Connectez-vous avec des prestataires de services qualifiés ou trouvez votre prochain emploi</p>
+            
+            <div class="hero-search">
+                <input type="text" id="search-input" placeholder="Plombier, électricien, offre d'emploi...">
+                <button onclick="rechercherDepuisAccueil()">Rechercher</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CATEGORIES DE SERVICES -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Services populaires</h2>
+            
+            <div class="categories">
+                <div class="category-card" onclick="window.location.href='recherche.html?metier=Plomberie'">
+                    <div class="category-icon">🔧</div>
+                    <h3>Plomberie</h3>
+                </div>
+                
+                <div class="category-card" onclick="window.location.href='recherche.html?metier=Électricité'">
+                    <div class="category-icon">⚡</div>
+                    <h3>Électricité</h3>
+                </div>
+                
+                <div class="category-card" onclick="window.location.href='recherche.html?metier=Menuiserie'">
+                    <div class="category-icon">🪚</div>
+                    <h3>Menuiserie</h3>
+                </div>
+                
+                <div class="category-card" onclick="window.location.href='recherche.html?metier=Maçonnerie'">
+                    <div class="category-icon">🧱</div>
+                    <h3>Maçonnerie</h3>
+                </div>
+                
+                <div class="category-card" onclick="window.location.href='recherche.html?metier=Peinture'">
+                    <div class="category-icon">🎨</div>
+                    <h3>Peinture</h3>
+                </div>
+                
+                <div class="category-card" onclick="window.location.href='recherche.html?metier=Informatique'">
+                    <div class="category-icon">💻</div>
+                    <h3>Informatique</h3>
+                </div>
+                
+                <div class="category-card" onclick="window.location.href='recherche.html?metier=Mécanique'">
+                    <div class="category-icon">🔩</div>
+                    <h3>Mécanique</h3>
+                </div>
+                
+                <div class="category-card" onclick="window.location.href='recherche.html'">
+                    <div class="category-icon">➕</div>
+                    <h3>Voir tout</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMMENT ÇA MARCHE -->
+    <section class="section" style="background-color: white;">
+        <div class="container">
+            <h2 class="section-title">Comment ça marche ?</h2>
+            
+            <div class="grid grid-3">
+                <div class="card text-center">
+                    <h3>1️⃣ Inscrivez-vous</h3>
+                    <p>Créez votre compte en quelques minutes. C'est gratuit et simple.</p>
+                </div>
+                
+                <div class="card text-center">
+                    <h3>2️⃣ Recherchez</h3>
+                    <p>Trouvez le prestataire ou l'emploi qui correspond à vos besoins.</p>
+                </div>
+                
+                <div class="card text-center">
+                    <h3>3️⃣ Connectez-vous</h3>
+                    <p>Entrez en contact directement via notre messagerie intégrée.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OFFRES D'EMPLOI RÉCENTES -->
+    <section class="section">
+        <div class="container">
+            <div class="d-flex justify-between align-center mb-3">
+                <h2>Offres d'emploi récentes</h2>
+                <a href="recherche.html?type=offres" class="btn btn-outline">Voir toutes les offres</a>
+            </div>
+            
+            <div id="offres-recentes" class="grid grid-2">
+                <!-- Les offres seront chargées dynamiquement -->
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRESTATAIRES EN VEDETTE -->
+    <section class="section" style="background-color: white;">
+        <div class="container">
+            <div class="d-flex justify-between align-center mb-3">
+                <h2>Prestataires recommandés</h2>
+                <a href="recherche.html?type=prestataires" class="btn btn-outline">Voir tous les prestataires</a>
+            </div>
+            
+            <div id="prestataires-vedette" class="grid grid-3">
+                <!-- Les prestataires seront chargés dynamiquement -->
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATISTIQUES -->
+    <section class="section" style="background: linear-gradient(135deg, var(--color-primary) 0%, #4a1623 100%); color: white;">
+        <div class="container">
+            <h2 class="section-title" style="color: var(--color-accent);">Liguey Connect en chiffres</h2>
+            
+            <div class="grid grid-4">
+                <div class="text-center">
+                    <h1 style="color: var(--color-secondary);">500+</h1>
+                    <p>Prestataires inscrits</p>
+                </div>
+                
+                <div class="text-center">
+                    <h1 style="color: var(--color-secondary);">1000+</h1>
+                    <p>Missions réalisées</p>
+                </div>
+                
+                <div class="text-center">
+                    <h1 style="color: var(--color-secondary);">200+</h1>
+                    <p>Offres d'emploi</p>
+                </div>
+                
+                <div class="text-center">
+                    <h1 style="color: var(--color-secondary);">98%</h1>
+                    <p>Clients satisfaits</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Liguey Connect</h3>
+                    <p>Plateforme de mise en relation pour l'emploi et les services de proximité au Sénégal.</p>
+                    <p><strong>19,2%</strong> de chômage au Sénégal - Nous sommes la solution.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Liens rapides</h3>
+                    <ul>
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="recherche.html">Rechercher</a></li>
+                        <li><a href="inscription.html">S'inscrire</a></li>
+                        <li><a href="connexion.html">Connexion</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="recherche.html?type=prestataires">Trouver un prestataire</a></li>
+                        <li><a href="recherche.html?type=offres">Chercher un emploi</a></li>
+                        <li><a href="inscription.html?type=recruteur">Publier une offre</a></li>
+                        <li><a href="inscription.html?type=prestataire">Devenir prestataire</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>📧 contact@ligueyconnect.sn</p>
+                    <p>📱 +221 33 800 00 00</p>
+                    <p>📍 Dakar, Sénégal</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Liguey Connect - École Supérieure Polytechnique de Dakar</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script src="js/main.js"></script>
+    <script>
+        // Fonction de recherche depuis l'accueil
+        function rechercherDepuisAccueil() {
+            const searchInput = document.getElementById('search-input');
+            const query = searchInput.value.trim();
+            
+            if (query) {
+                window.location.href = `recherche.html?q=${encodeURIComponent(query)}`;
+            } else {
+                window.location.href = 'recherche.html';
+            }
+        }
+        
+        // Recherche avec Enter
+        document.getElementById('search-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                rechercherDepuisAccueil();
+            }
+        });
+        
+        // Charger les offres récentes
+        async function chargerOffresRecentes() {
+            try {
+                const response = await LigueyConnect.recupererOffres({ limite: 4 });
+                const container = document.getElementById('offres-recentes');
+                
+                if (response.success && response.data.offres.length > 0) {
+                    container.innerHTML = response.data.offres.map(offre => `
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <h3 class="card-title">${offre.titre}</h3>
+                                    <p class="card-subtitle">${offre.recruteur_nom} ${offre.recruteur_prenom}</p>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p>${offre.descript
