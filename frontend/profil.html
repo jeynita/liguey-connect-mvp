@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Profil - Liguey Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">Liguey<span>Connect</span></a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="recherche.html">Rechercher</a></li>
+                    <li><a href="mon-profil.html" class="active">Mon Profil</a></li>
+                    <li><a href="#" onclick="LigueyConnect.deconnecterUtilisateur()">Déconnexion</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <!-- Message de chargement -->
+            <div id="loading-profil" class="text-center">
+                <div class="spinner"></div>
+                <p>Chargement de votre profil...</p>
+            </div>
+
+            <!-- Contenu du profil (caché au début) -->
+            <div id="contenu-profil" style="display: none;">
+                
+                <!-- En-tête du profil -->
+                <div class="card">
+                    <div class="d-flex align-center gap-3">
+                        <div style="position: relative;">
+                            <img id="photo-profil" src="https://via.placeholder.com/120" alt="Photo de profil" 
+                                 style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid var(--color-secondary);">
+                            <button class="btn btn-sm btn-secondary" onclick="ouvrirModalPhoto()" 
+                                    style="position: absolute; bottom: 0; right: 0; border-radius: 50%; width: 35px; height: 35px; padding: 0;">
+                                📷
+                            </button>
+                        </div>
+                        
+                        <div style="flex: 1;">
+                            <h1 id="nom-complet" style="margin-bottom: 0.5rem;">---</h1>
+                            <p id="type-utilisateur" class="badge badge-primary" style="font-size: 1rem; padding: 0.5rem 1rem;">---</p>
+                            <p id="localisation" style="margin-top: 0.5rem; color: var(--color-text);">📍 ---</p>
+                        </div>
+                        
+                        <div class="text-right">
+                            <button class="btn btn-primary" onclick="afficherModeEdition()">
+                                ✏️ Modifier mon profil
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistiques rapides -->
+                <div class="grid grid-3 mt-3">
+                    <div class="card text-center">
+                        <h3 id="stat-messages" style="color: var(--color-secondary); font-size: 2.5rem;">0</h3>
+                        <p>Messages</p>
+                    </div>
+                    <div class="card text-center">
+                        <h3 id="stat-notifications" style="color: var(--color-secondary); font-size: 2.5rem;">0</h3>
+                        <p>Notifications</p>
+                    </div>
+                    <div class="card text-center" id="stat-specifique">
+                        <h3 id="stat-valeur" style="color: var(--color-secondary); font-size: 2.5rem;">0</h3>
+                        <p id="stat-label">Activités</p>
+                    </div>
+                </div>
+
+                <!-- Section PRESTATAIRE -->
+                <div id="section-prestataire" style="display: none;">
+                    <div class="card mt-3">
+                        <h2>Informations professionnelles</h2>
+                        <hr>
+                        
+                        <div class="grid grid-2 gap-3">
+                            <div>
+                                <p><strong>Métier :</strong> <span id="prest-metier">---</span></p>
+                                <p><strong>Années d'expérience :</strong> <span id="prest-experience">---</span> ans</p>
+                                <p><strong>Tarif horaire :</strong> <span id="prest-tarif">---</span> FCFA</p>
+                                <p><strong>Disponibilité :</strong> <span id="prest-disponibilite" class="badge badge-success">---</span></p>
+                            </div>
+                            <div>
+                                <p><strong>Note moyenne :</strong> <span id="prest-note">---</span></p>
+                                <p><strong>Nombre d'avis :</strong> <span id="prest-nb-avis">---</span></p>
+                                <p><strong>Profil vérifié :</strong> <span id="prest-verifie">---</span></p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <p><strong>Compétences :</strong></p>
+                            <p id="prest-competences" style="color: var(--color-text);">---</p>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <p><strong>Description :</strong></p>
+                            <p id="prest-description" style="color: var(--color-text);">---</p>
+                        </div>
+                    </div>
+
+                    <!-- Avis reçus -->
+                    <div class="card mt-3">
+                        <h2>Avis des clients (<span id="total-avis">0</span>)</h2>
+                        <hr>
+                        <div id="liste-avis">
+                            <p class="text-center">Aucun avis pour le moment.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section DEMANDEUR -->
+                <div id="section-demandeur" style="display: none;">
+                    <div class="card mt-3">
+                        <h2>Profil professionnel</h2>
+                        <hr>
+                        
+                        <div class="grid grid-2 gap-3">
+                            <div>
+                                <p><strong>Compétences :</strong></p>
+                                <p id="dem-competences" style="color: var(--color-text);">---</p>
+                            </div>
+                            <div>
+                                <p><strong>Type de contrat recherché :</strong></p>
+                                <p id="dem-type-contrat" style="color: var(--color-text);">---</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <p><strong>Expérience professionnelle :</strong></p>
+                            <p id="dem-experience" style="color: var(--color-text);">---</p>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <p><strong>Formations :</strong></p>
+                            <p id="dem-formations" style="color: var(--color-text);">---</p>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <p><strong>Diplômes :</strong></p>
+                            <p id="dem-diplomes" style="color: var(--color-text);">---</p>
+                        </div>
+                    </div>
+
+                    <!-- Candidatures -->
+                    <div class="card mt-3">
+                        <h2>Mes candidatures (<span id="total-candidatures">0</span>)</h2>
+                        <hr>
+                        <div id="liste-candidatures">
+                            <p class="text-center">Aucune candidature pour le moment.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section RECRUTEUR -->
+                <div id="section-recruteur" style="display: none;">
+                    <div class="card mt-3">
+                        <div class="d-flex justify-between align-center">
+                            <h2>Mes offres publiées (<span id="total-offres">0</span>)</h2>
+                            <a href="publier-offre.html" class="btn btn-primary">➕ Publier une offre</a>
+                        </div>
+                        <hr>
+                        <div id="liste-offres">
+                            <p class="text-center">Aucune offre publiée pour le moment.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informations du compte -->
+                <div class="card mt-3">
+                    <h2>Informations du compte</h2>
+                    <hr>
+                    
+                    <div class="grid grid-2 gap-3">
+                        <div>
+                            <p><strong>Téléphone :</strong> <span id="compte-telephone">---</span></p>
+                            <p><strong>Email :</strong> <span id="compte-email">---</span></p>
+                        </div>
+                        <div>
+                            <p><strong>Membre depuis :</strong> <span id="compte-date-creation">---</span></p>
+                            <p><strong>Dernière connexion :</strong> <span id="compte-derniere-connexion">---</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Upload Photo -->
+    <div id="modal-photo" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Changer ma photo de profil</h2>
+                <button class="modal-close" onclick="LigueyConnect.fermerModal('modal-photo')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-upload-photo">
+                    <div class="form-group">
+                        <label class="form-label">Choisir une photo</label>
+                        <input type="file" id="input-photo" class="form-input" accept="image/*" required>
+                        <small>Formats acceptés : JPG, PNG, GIF, WEBP (max 5MB)</small>
+                    </div>
+                    
+                    <div id="preview-photo" class="text-center mt-3" style="display: none;">
+                        <img id="img-preview" src="" alt="Aperçu" style="max-width: 200px; border-radius: 10px;">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block mt-3">
+                        📤 Télécharger
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Édition Profil -->
+    <div id="modal-edition" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <h2>Modifier mon profil</h2>
+                <button class="modal-close" onclick="LigueyConnect.fermerModal('modal-edition')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-edition-profil">
+                    <h3>Informations personnelles</h3>
+                    
+                    <div class="grid grid-2 gap-2">
+                        <div class="form-group">
+                            <label class="form-label">Nom</label>
+                            <input type="text" id="edit-nom" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Prénom</label>
+                            <input type="text" id="edit-prenom" class="form-input" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" id="edit-email" class="form-input">
+                    </div>
+                    
+                    <div class="grid grid-2 gap-2">
+                        <div class="form-group">
+                            <label class="form-label">Région</label>
+                            <select id="edit-region" class="form-select">
+                                <option value="Dakar">Dakar</option>
+                                <option value="Thiès">Thiès</option>
+                                <option value="Saint-Louis">Saint-Louis</option>
+                                <option value="Kaolack">Kaolack</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Commune</label>
+                            <input type="text" id="edit-commune" class="form-input">
+                        </div>
+                    </div>
+                    
+                    <!-- Champs spécifiques PRESTATAIRE -->
+                    <div id="edit-section-prestataire" style="display: none;">
+                        <hr>
+                        <h3>Informations professionnelles</h3>
+                        
+                        <div class="grid grid-2 gap-2">
+                            <div class="form-group">
+                                <label class="form-label">Métier</label>
+                                <select id="edit-metier" class="form-select">
+                                    <option value="Plomberie">Plomberie</option>
+                                    <option value="Électricité">Électricité</option>
+                                    <option value="Menuiserie">Menuiserie</option>
+                                    <option value="Maçonnerie">Maçonnerie</option>
+                                    <option value="Informatique">Informatique</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Années d'expérience</label>
+                                <input type="number" id="edit-experience" class="form-input" min="0">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Tarif horaire (FCFA)</label>
+                            <input type="number" id="edit-tarif" class="form-input">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Compétences</label>
+                            <input type="text" id="edit-competences" class="form-input" placeholder="Installation, Réparation, Dépannage...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea id="edit-description" class="form-textarea"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Disponibilité</label>
+                            <select id="edit-disponibilite" class="form-select">
+                                <option value="immediat">Immédiate</option>
+                                <option value="sous_24h">Sous 24h</option>
+                                <option value="sous_semaine">Sous une semaine</option>
+                                <option value="sur_rendez_vous">Sur rendez-vous</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Champs spécifiques DEMANDEUR -->
+                    <div id="edit-section-demandeur" style="display: none;">
+                        <hr>
+                        <h3>Profil professionnel</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Compétences</label>
+                            <input type="text" id="edit-competences-dem" class="form-input">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Expérience professionnelle</label>
+                            <textarea id="edit-experience-dem" class="form-textarea"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Formations</label>
+                            <textarea id="edit-formations" class="form-textarea"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Type de contrat recherché</label>
+                            <select id="edit-type-contrat" class="form-select">
+                                <option value="CDD,CDI">CDD ou CDI</option>
+                                <option value="CDI">CDI uniquement</option>
+                                <option value="CDD">CDD uniquement</option>
+                                <option value="mission">Missions ponctuelles</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block btn-lg mt-4">
+                        💾 Enregistrer les modifications
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Liguey Connect</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        let profilUtilisateur = null;
+        let userId = null;
+
+        // Charger le profil au chargement de la page
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = LigueyConnect.verifierConnexion();
+            
+            if (!user) {
+                window.location.href = 'connexion.html';
+                return;
+            }
+            
+            userId = user.user_id || user.id;
+            await chargerProfil();
+        });
+
+        // Charger le profil complet
+        async function chargerProfil() {
+            try {
+                LigueyConnect.afficherChargement(true);
+                
+                const response = await LigueyConnect.requeteAPI(`profils.php?id=${userId}`);
+                
+                LigueyConnect.afficherChargement(false);
+                
+                if (response.success) {
+                    profilUtilisateur = response.data;
+                    afficherProfil(profilUtilisateur);
+                } else {
+                    LigueyConnect.afficherAlerte('Impossible de charger le profil', 'error');
+                }
+            } catch (error) {
+                LigueyConnect.afficherChargement(false);
+                LigueyConnect.afficherAlerte('Erreur de chargement du profil', 'error');
+                console.error(error);
+            }
+        }
+
+        // Afficher les données du profil
+        function afficherProfil(data) {
+            const base = data.profil_base;
+            const complementaire = data.profil_complementaire;
+            const stats = data.statistiques;
+            
+            // Masquer le loading, afficher le contenu
+            document.getElementById('loading-profil').style.display = 'none';
+            document.getElementById('contenu-profil').style.display = 'block';
+            
+            // Informations de base
+            document.getElementById('nom-complet').textContent = `${base.prenom} ${base.nom}`;
+            document.getElementById('type-utilisateur').textContent = 
+                base.type_utilisateur === 'prestataire' ? '🔧 Prestataire' :
+                base.type_utilisateur === 'demandeur' ? '👤 Demandeur d\'emploi' : '💼 Recruteur';
+            document.getElementById('localisation').textContent = `📍 ${base.localisation}`;
+            
+            if (base.photo_profil) {
+                document.getElementById('photo-profil').src = base.photo_profil;
+            }
+            
+            // Statistiques
+            document.getElementById('stat-messages').textContent = stats.messages;
+            document.getElementById('stat-notifications').textContent = stats.notifications_non_lues;
+            
+            // Informations du compte
+            document.getElementById('compte-telephone').textContent = base.telephone;
+            document.getElementById('compte-email').textContent = base.email || 'Non renseigné';
+            document.getElementById('compte-date-creation').textContent = LigueyConnect.formaterDate(base.date_creation);
+            document.getElementById('compte-derniere-connexion').textContent = 
+                base.derniere_connexion ? LigueyConnect.formaterDate(base.derniere_connexion) : 'Jamais';
+            
+            // Afficher la section spécifique selon le type
+            if (base.type_utilisateur === 'prestataire') {
+                afficherProfilPrestataire(complementaire);
+            } else if (base.type_utilisateur === 'demandeur') {
+                afficherProfilDemandeur(complementaire);
+            } else if (base.type_utilisateur === 'recruteur') {
+                afficherProfilRecruteur(complementaire);
+            }
+        }
+
+        // Afficher profil PRESTATAIRE
+        function afficherProfilPrestataire(data) {
+            document.getElementById('section-prestataire').style.display = 'block';
+            
+            document.getElementById('prest-metier').textContent = data.metier;
+            document.getElementById('prest-experience').textContent = data.annees_experience;
+            document.getElementById('prest-tarif').textContent = data.tarif_horaire ? data.tarif_horaire.toLocaleString() : 'Sur devis';
+            document.getElementById('prest-disponibilite').textContent = data.disponibilite;
+            document.getElementById('prest-note').innerHTML = LigueyConnect.genererEtoiles(parseFloat(data.note_moyenne));
+            document.getElementById('prest-nb-avis').textContent = data.nombre_avis;
+            document.getElementById('prest-verifie').innerHTML = data.profil_verifie ? 
+                '<span class="badge badge-success">✓ Vérifié</span>' : 
+                '<span class="badge badge-warning">Non vérifié</span>';
+            document.getElementById('prest-competences').textContent = data.competences || 'Non renseigné';
+            document.getElementById('prest-description').textContent = data.description || 'Aucune description';
+            
+            // Stat spécifique
+            document.getElementById('stat-valeur').textContent = data.nombre_avis;
+            document.getElementById('stat-label').textContent = 'Avis reçus';
+            
+            // Afficher les avis
+            if (data.avis && data.avis.length > 0) {
+                document.getElementById('total-avis').textContent = data.avis.length;
+                document.getElementById('liste-avis').innerHTML = data.avis.map(avis => `
+                    <div class="card mb-2">
+                        <div class="d-flex align-center gap-2">
+                            <img src="${avis.evaluateur_photo || 'https://via.placeholder.com/50'}" 
+                                 alt="${avis.evaluateur_nom}" 
+                                 style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                            <div style="flex: 1;">
+                                <strong>${avis.evaluateur_prenom} ${avis.evaluateur_nom}</strong>
+                                ${LigueyConnect.genererEtoiles(avis.note)}
+                                <p style="margin-top: 0.5rem;">${avis.commentaire}</p>
+                                <small style="color: var(--color-text);">${LigueyConnect.formaterDate(avis.date_creation)}</small>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Afficher profil DEMANDEUR
+        function afficherProfilDemandeur(data) {
+            document.getElementById('section-demandeur').style.display = 'block';
+            
+            document.getElementById('dem-competences').textContent = data.competences || 'Non renseigné';
+            document.getElementById('dem-type-contrat').textContent = data.type_contrat_recherche || 'Non renseigné';
+            document.getElementById('dem-experience').textContent = data.experience_professionnelle || 'Non renseigné';
+            document.getElementById('dem-formations').textContent = data.formations || 'Non renseigné';
+            document.getElementById('dem-diplomes').textContent = data.diplomes || 'Non renseigné';
+            
+            // Stat spécifique
+            document.getElementById('stat-valeur').textContent = data.candidatures ? data.candidatures.length : 0;
+            document.getElementById('stat-label').textContent = 'Candidatures';
+            
+            // Afficher les candidatures
+            if (data.candidatures && data.candidatures.length > 0) {
+                document.getElementById('total-candidatures').textContent = data.candidatures.length;
+                document.getElementById('liste-candidatures').innerHTML = data.candidatures.map(cand => `
+                    <div class="card mb-2">
+                        <h4>${cand.offre_titre}</h4>
+                        <p><strong>Entreprise :</strong> ${cand.recruteur_prenom} ${cand.recruteur_nom}</p>
+                        <p><strong>Type :</strong> ${cand.type_contrat}</p>
+                        <p><strong>Statut :</strong> 
+                            <span class="badge ${
+                                cand.statut === 'acceptee' ? 'badge-success' :
+                                cand.statut === 'refusee' ? 'badge-error' :
+                                cand.statut === 'vue' ? 'badge-warning' : 'badge-secondary'
+                            }">${cand.statut}</span>
+                        </p>
+                        <small>${LigueyConnect.formaterDate(cand.date_candidature)}</small>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Afficher profil RECRUTEUR
+        function afficherProfilRecruteur(data) {
+            document.getElementById('section-recruteur').style.display = 'block';
+            
+            // Stat spécifique
+            document.getElementById('stat-valeur').textContent = data.offres_publiees ? data.offres_publiees.length : 0;
+            document.getElementById('stat-label').textContent = 'Offres publiées';
+            
+            // Afficher les offres
+            if (data.offres_publiees && data.offres_publiees.length > 0) {
+                document.getElementById('total-offres').textContent = data.offres_publiees.length;
+                document.getElementById('liste-offres').innerHTML = data.offres_publiees.map(offre => `
+                    <div class="card mb-2">
+                        <h4>${offre.titre}</h4>
+                        <p>${offre.description.substring(0, 150)}...</p>
+                        <div class="d-flex gap-2 mt-2">
+                            <span class="badge badge-primary">${offre.type_contrat}</span>
+                            <span class="badge badge-secondary">📍 ${offre.commune}</span>
+                            <span class="badge ${offre.statut === 'active' ? 'badge-success' : 'badge-warning'}">
+                                ${offre.statut}
+                            </span>
+                        </div>
+                        <p class="mt-2"><strong>Candidatures :</strong> ${offre.nombre_candidatures}</p>
+                        <small>${LigueyConnect.formaterDate(offre.date_creation)}</small>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Modal photo
+        function ouvrirModalPhoto() {
+            LigueyConnect.ouvrirModal('modal-photo');
+        }
+
+        // Prévisualisation photo
+        document.getElementById('input-photo').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('img-preview').src = e.target.result;
+                    document.getElementById('preview-photo').style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Upload photo
+        document.getElementById('form-upload-photo').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('input-photo');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                LigueyConnect.afficherAlerte('Veuillez sélectionner une photo', 'error');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('photo', file);
+            
+            try {
+                LigueyConnect.afficherChargement(true);
+                
+                const response = await fetch('/liguey-connect-mvp/api/profils.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                LigueyConnect.afficherChargement(false);
+                
+                if (data.success) {
+                    LigueyConnect.afficherAlerte('Photo mise à jour !', 'success');
+                    document.getElementById('photo-profil').src = data.data.photo_url;
+                    LigueyConnect.fermerModal('modal-photo');
+                    fileInput.value = '';
+                    document.getElementById('preview-photo').style.display = 'none';
+                } else {
+                    LigueyConnect.afficherAlerte(data.message, 'error');
+                }
+            } catch (error) {
+                LigueyConnect.afficherChargement(false);
+                LigueyConnect.afficherAlerte('Erreur lors de l\'upload', 'error');
+            }
+        });
+
+        // Afficher mode édition
+        function afficherModeEdition() {
+            const base = profilUtilisateur.profil_base;
+            const complementaire = profilUtilisateur.profil_complementaire;
+            
+            // Remplir le formulaire
+            document.getElementById('edit-nom').value = base.nom;
+            document.getElementById('edit-prenom').value = base.prenom;
+            document.getElementById('edit-email').value = base.email || '';
+            document.getElementById('edit-region').value = base.region;
+            document.getElementById('edit-commune').value = base.commune;
+            
+            // Afficher champs spécifiques
+            if (base.type_utilisateur === 'prestataire') {
+                document.getElementById('edit-section-prestataire').style.display = 'block';
+                document.getElementById('edit-metier').value = complementaire.metier;
+                document.getElementById('edit-experience').value = complementaire.annees_experience;
+                document.getElementById('edit-tarif').value = complementaire.tarif_horaire;
+                document.getElementById('edit-competences').value = complementaire.competences || '';
+                document.getElementById('edit-description').value = complementaire.description || '';
+                document.getElementById('edit-disponibilite').value = complementaire.disponibilite;
+            }
+            
+            if (base.type_utilisateur === 'demandeur') {
+                document.getElementById('edit-section-demandeur').style.display = 'block';
+                document.getElementById('edit-competences-dem').value = complementaire.competences || '';
+                document.getElementById('edit-experience-dem').value = complementaire.experience_professionnelle || '';
+                document.getElementById('edit-formations').value = complementaire.formations || '';
+                document.getElementById('edit-type-contrat').value = complementaire.type_contrat_recherche || '';
+            }
+            
+            LigueyConnect.ouvrirModal('modal-edition');
+        }
+
+        // Soumettre modifications
+        document.getElementById('form-edition-profil').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const base = profilUtilisateur.profil_base;
+            
+            const formData = {
+                nom: document.getElementById('edit-nom').value,
+                prenom: document.getElementById('edit-prenom').value,
+                email: document.getElementById('edit-email').value,
+                region: document.getElementById('edit-region').value,
+                commune: document.getElementById('edit-commune').value,
+                localisation: `${document.getElementById('edit-commune').value}, ${document.getElementById('edit-region').value}`
+            };
+            
+            // Ajouter champs spécifiques
+            if (base.type_utilisateur === 'prestataire') {
+                formData.metier = document.getElementById('edit-metier').value;
+                formData.annees_experience = parseInt(document.getElementById('edit-experience').value);
+                formData.tarif_horaire = parseFloat(document.getElementById('edit-tarif').value);
+                formData.competences = document.getElementById('edit-competences').value;
+                formData.description = document.getElementById('edit-description').value;
+                formData.disponibilite = document.getElementById('edit-disponibilite').value;
+            }
+            
+            if (base.type_utilisateur === 'demandeur') {
+                formData.competences = document.getElementById('edit-competences-dem').value;
+                formData.experience_professionnelle = document.getElementById('edit-experience-dem').value;
+                formData.formations = document.getElementById('edit-formations').value;
+                formData.type_contrat_recherche = document.getElementById('edit-type-contrat').value;
+            }
+            
+            try {
+                LigueyConnect.afficherChargement(true);
+                
+                const response = await fetch('/liguey-connect-mvp/api/profils.php', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                LigueyConnect.afficherChargement(false);
+                
+                if (data.success) {
+                    LigueyConnect.afficherAlerte('Profil mis à jour !', 'success');
+                    LigueyConnect.fermerModal('modal-edition');
+                    await chargerProfil(); // Recharger le profil
+                } else {
+                    LigueyConnect.afficherAlerte(data.message, 'error');
+                }
+            } catch (error) {
+                LigueyConnect.afficherChargement(false);
+                LigueyConnect.afficherAlerte('Erreur lors de la mise à jour', 'error');
+            }
+        });
+    </script>
+</body>
+</html>

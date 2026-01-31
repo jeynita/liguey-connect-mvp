@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - Liguey Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">Liguey<span>Connect</span></a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="recherche.html">Rechercher</a></li>
+                    <li><a href="connexion.html">Connexion</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container" style="max-width: 600px;">
+            <h1 class="text-center">Créer un compte</h1>
+            <p class="text-center mb-4">Rejoignez Liguey Connect et trouvez votre liguey !</p>
+
+            <!-- Choix du type d'utilisateur -->
+            <div id="step-type" class="card">
+                <h2>Je suis...</h2>
+                <p class="mb-3">Sélectionnez votre profil</p>
+                
+                <div class="grid grid-3 gap-2">
+                    <button class="btn btn-outline btn-block" onclick="choisirType('demandeur')">
+                        <div style="font-size: 2rem;">👤</div>
+                        <strong>Demandeur d'emploi</strong>
+                        <small style="display: block; margin-top: 0.5rem;">Je cherche un emploi</small>
+                    </button>
+                    
+                    <button class="btn btn-outline btn-block" onclick="choisirType('prestataire')">
+                        <div style="font-size: 2rem;">🔧</div>
+                        <strong>Prestataire</strong>
+                        <small style="display: block; margin-top: 0.5rem;">Je propose mes services</small>
+                    </button>
+                    
+                    <button class="btn btn-outline btn-block" onclick="choisirType('recruteur')">
+                        <div style="font-size: 2rem;">💼</div>
+                        <strong>Recruteur</strong>
+                        <small style="display: block; margin-top: 0.5rem;">Je recrute</small>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Formulaire d'inscription (caché au début) -->
+            <form id="form-inscription" class="card" style="display: none;">
+                <h2>Informations personnelles</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">Nom *</label>
+                    <input type="text" id="nom" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Prénom *</label>
+                    <input type="text" id="prenom" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Téléphone *</label>
+                    <input type="tel" id="telephone" class="form-input" placeholder="77 123 45 67" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email (optionnel)</label>
+                    <input type="email" id="email" class="form-input">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Mot de passe *</label>
+                    <input type="password" id="mot_de_passe" class="form-input" required>
+                    <small>Minimum 8 caractères</small>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Confirmer le mot de passe *</label>
+                    <input type="password" id="confirmer_mot_de_passe" class="form-input" required>
+                </div>
+                
+                <hr style="margin: 2rem 0;">
+                
+                <h2>Localisation</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">Région *</label>
+                    <select id="region" class="form-select" required>
+                        <option value="">Sélectionnez...</option>
+                        <option value="Dakar">Dakar</option>
+                        <option value="Thiès">Thiès</option>
+                        <option value="Saint-Louis">Saint-Louis</option>
+                        <option value="Diourbel">Diourbel</option>
+                        <option value="Kaolack">Kaolack</option>
+                        <option value="Fatick">Fatick</option>
+                        <option value="Louga">Louga</option>
+                        <option value="Matam">Matam</option>
+                        <option value="Tambacounda">Tambacounda</option>
+                        <option value="Kolda">Kolda</option>
+                        <option value="Ziguinchor">Ziguinchor</option>
+                        <option value="Kaffrine">Kaffrine</option>
+                        <option value="Kédougou">Kédougou</option>
+                        <option value="Sédhiou">Sédhiou</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Commune *</label>
+                    <input type="text" id="commune" class="form-input" placeholder="Ex: Pikine, Guédiawaye..." required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Quartier</label>
+                    <input type="text" id="quartier" class="form-input" placeholder="Ex: Médina Gounass">
+                </div>
+                
+                <!-- Champs spécifiques PRESTATAIRE -->
+                <div id="champs-prestataire" style="display: none;">
+                    <hr style="margin: 2rem 0;">
+                    <h2>Informations professionnelles</h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Métier principal *</label>
+                        <select id="metier" class="form-select">
+                            <option value="">Sélectionnez...</option>
+                            <option value="Plomberie">Plomberie</option>
+                            <option value="Électricité">Électricité</option>
+                            <option value="Menuiserie">Menuiserie</option>
+                            <option value="Maçonnerie">Maçonnerie</option>
+                            <option value="Peinture">Peinture</option>
+                            <option value="Jardinage">Jardinage</option>
+                            <option value="Mécanique">Mécanique</option>
+                            <option value="Informatique">Informatique</option>
+                            <option value="Couture">Couture</option>
+                            <option value="Nettoyage">Nettoyage</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Compétences</label>
+                        <input type="text" id="competences" class="form-input" placeholder="Ex: Installation, Réparation, Dépannage...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Années d'expérience</label>
+                        <input type="number" id="annees_experience" class="form-input" min="0" value="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Tarif horaire (FCFA)</label>
+                        <input type="number" id="tarif_horaire" class="form-input" placeholder="5000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Description de vos services</label>
+                        <textarea id="description" class="form-textarea" placeholder="Présentez-vous et décrivez vos services..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Champs spécifiques DEMANDEUR -->
+                <div id="champs-demandeur" style="display: none;">
+                    <hr style="margin: 2rem 0;">
+                    <h2>Profil professionnel</h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Compétences</label>
+                        <input type="text" id="competences_demandeur" class="form-input" placeholder="Ex: Bureautique, Comptabilité, Commercial...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Type de contrat recherché</label>
+                        <select id="type_contrat_recherche" class="form-select">
+                            <option value="CDD,CDI">CDD ou CDI</option>
+                            <option value="CDD">CDD uniquement</option>
+                            <option value="CDI">CDI uniquement</option>
+                            <option value="mission">Missions ponctuelles</option>
+                            <option value="stage">Stage</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group mt-4">
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="accepter_cgu" required>
+                        <span>J'accepte les <a href="#" style="color: var(--color-secondary);">conditions générales d'utilisation</a></span>
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block btn-lg mt-3">Créer mon compte</button>
+                
+                <p class="text-center mt-3">
+                    Vous avez déjà un compte ? <a href="connexion.html" style="color: var(--color-secondary); font-weight: bold;">Connectez-vous</a>
+                </p>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Liguey Connect</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        let typeUtilisateur = '';
+        
+        // Choisir le type d'utilisateur
+        function choisirType(type) {
+            typeUtilisateur = type;
+            document.getElementById('step-type').style.display = 'none';
+            document.getElementById('form-inscription').style.display = 'block';
+            
+            // Afficher les champs spécifiques
+            if (type === 'prestataire') {
+                document.getElementById('champs-prestataire').style.display = 'block';
+                document.getElementById('metier').required = true;
+            } else if (type === 'demandeur') {
+                document.getElementById('champs-demandeur').style.display = 'block';
+            }
+        }
+        
+        // Gérer la soumission du formulaire
+        document.getElementById('form-inscription').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Valider le formulaire
+            if (!LigueyConnect.validerFormulaire('form-inscription')) {
+                return;
+            }
+            
+            // Vérifier la confirmation du mot de passe
+            const motDePasse = document.getElementById('mot_de_passe').value;
+            const confirmation = document.getElementById('confirmer_mot_de_passe').value;
+            
+            if (motDePasse !== confirmation) {
+                LigueyConnect.afficherAlerte('Les mots de passe ne correspondent pas', 'error');
+                return;
+            }
+            
+            if (motDePasse.length < 8) {
+                LigueyConnect.afficherAlerte('Le mot de passe doit contenir au moins 8 caractères', 'error');
+                return;
+            }
+            
+            // Préparer les données
+            const formData = {
+                nom: document.getElementById('nom').value.trim(),
+                prenom: document.getElementById('prenom').value.trim(),
+                telephone: document.getElementById('telephone').value.trim(),
+                email: document.getElementById('email').value.trim() || null,
+                mot_de_passe: motDePasse,
+                type_utilisateur: typeUtilisateur,
+                region: document.getElementById('region').value,
+                commune: document.getElementById('commune').value.trim(),
+                quartier: document.getElementById('quartier').value.trim() || null,
+                localisation: `${document.getElementById('commune').value}, ${document.getElementById('region').value}`
+            };
+            
+            // Ajouter les données spécifiques au type
+            if (typeUtilisateur === 'prestataire') {
+                formData.metier = document.getElementById('metier').value;
+                formData.competences = document.getElementById('competences').value.trim() || null;
+                formData.annees_experience = parseInt(document.getElementById('annees_experience').value) || 0;
+                formData.tarif_horaire = parseFloat(document.getElementById('tarif_horaire').value) || null;
+                formData.description = document.getElementById('description').value.trim() || null;
+            }
+            
+            if (typeUtilisateur === 'demandeur') {
+                formData.competences = document.getElementById('competences_demandeur').value.trim() || null;
+                formData.type_contrat_recherche = document.getElementById('type_contrat_recherche').value;
+            }
+            
+            // Envoyer au serveur
+            try {
+                await LigueyConnect.inscrireUtilisateur(formData);
+            } catch (error) {
+                console.error('Erreur inscription:', error);
+            }
+        });
+    </script>
+</body>
+</html>
