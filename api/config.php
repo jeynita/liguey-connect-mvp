@@ -6,6 +6,10 @@
  * Ne jamais commiter ce fichier sur Git en production !
  * Utilisez config.example.php comme modèle
  */
+$host = "localhost";
+$username = "root";
+$password = ""; // Vide par défaut sur XAMPP
+$data = "liguey_connect";
 
 // Configuration de la base de données
 define('DB_HOST', 'localhost');
